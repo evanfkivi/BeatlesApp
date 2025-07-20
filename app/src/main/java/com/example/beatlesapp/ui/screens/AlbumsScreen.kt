@@ -100,18 +100,6 @@ fun BeatlesAppBar() {
     )
 }
 
-@Composable
-fun InfoScreen(album: AlbumItem) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        BeatlesAppBar()
-        Spacer(modifier = Modifier.height(20.dp))
-        Text("The title of the album is ${album.title}. It was released in ${album.year}. This albums lasts ${album.length} over the span of ${album.songs} songs")
-    }
-}
-
 sealed class Routes(val route: String) {
     data object Start : Routes("albumsScreen")
     data object Abbey : Routes("abbey")
