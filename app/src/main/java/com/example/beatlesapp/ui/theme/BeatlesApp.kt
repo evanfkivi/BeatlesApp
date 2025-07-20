@@ -1,6 +1,5 @@
 package com.example.beatlesapp.ui.theme
 
-import android.provider.MediaStore.Audio.Albums
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,21 +11,24 @@ import androidx.navigation.compose.rememberNavController
 import com.example.beatlesapp.data.AlbumList
 
 @Composable
-fun BeatlesApp () {
+fun BeatlesApp() {
     val navController: NavHostController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination
 
-    Scaffold() {innerPadding ->
-        NavHost(navController = navController,
-            startDestination = Routes.Start.route) {
+    Scaffold() { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Routes.Start.route
+        ) {
 
             composable(route = Routes.Start.route) {
-                AlbumsScreen(albumList = AlbumList,
-                    onAbbeyClicked = {navController.navigate(Routes.Abbey.route)},
-                    onRubberClicked = {navController.navigate(Routes.Rubber.route)},
-                    onRevolverClicked = {navController.navigate(Routes.Revolver.route)},
-                    onPepperClicked = {navController.navigate(Routes.Pepper.route)})
+                AlbumsScreen(
+                    albumList = AlbumList,
+                    onAbbeyClicked = { navController.navigate(Routes.Abbey.route) },
+                    onRubberClicked = { navController.navigate(Routes.Rubber.route) },
+                    onRevolverClicked = { navController.navigate(Routes.Revolver.route) },
+                    onPepperClicked = { navController.navigate(Routes.Pepper.route) })
             }
 
             composable(route = Routes.Abbey.route) {

@@ -1,13 +1,11 @@
 package com.example.beatlesapp.ui.theme
 
-import android.provider.MediaStore.Audio.Albums
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
@@ -24,45 +22,56 @@ import androidx.compose.ui.unit.sp
 import com.example.beatlesapp.data.AlbumItem
 
 @Composable
-fun AlbumsScreen (albumList: List<AlbumItem>,
-                  onAbbeyClicked: () -> Unit,
-                  onRubberClicked: () -> Unit,
-                  onRevolverClicked: () -> Unit,
-                  onPepperClicked: () -> Unit) {
+fun AlbumsScreen(
+    albumList: List<AlbumItem>,
+    onAbbeyClicked: () -> Unit,
+    onRubberClicked: () -> Unit,
+    onRevolverClicked: () -> Unit,
+    onPepperClicked: () -> Unit
+) {
 
     Column {
 
         BeatlesAppBar()
 
-        LazyVerticalGrid (columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.Top){
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.Top
+        ) {
 
             item {
-                ShowAlbumItem(albumText = albumList[0].title,
-                    onClick = onAbbeyClicked)
+                ShowAlbumItem(
+                    albumText = albumList[0].title,
+                    onClick = onAbbeyClicked
+                )
             }
 
             item {
-                ShowAlbumItem(albumText = albumList[1].title,
-                    onClick = onRubberClicked)
+                ShowAlbumItem(
+                    albumText = albumList[1].title,
+                    onClick = onRubberClicked
+                )
             }
 
             item {
-                ShowAlbumItem(albumText = albumList[2].title,
-                    onClick = onRevolverClicked)
+                ShowAlbumItem(
+                    albumText = albumList[2].title,
+                    onClick = onRevolverClicked
+                )
             }
 
             item {
-                ShowAlbumItem(albumText = albumList[3].title,
-                    onClick = onPepperClicked)
+                ShowAlbumItem(
+                    albumText = albumList[3].title,
+                    onClick = onPepperClicked
+                )
             }
-    } }
-
-
+        }
+    }
 }
 
 @Composable
-fun ShowAlbumItem (
+fun ShowAlbumItem(
     albumText: String,
     onClick: () -> Unit
 ) {
@@ -80,10 +89,10 @@ fun ShowAlbumItem (
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeatlesAppBar () {
+fun BeatlesAppBar() {
     TopAppBar(
         title = {
-            Text (
+            Text(
                 "Beatles App",
                 fontWeight = FontWeight.Bold
             )
@@ -92,9 +101,11 @@ fun BeatlesAppBar () {
 }
 
 @Composable
-fun InfoScreen (album: AlbumItem) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()) {
+fun InfoScreen(album: AlbumItem) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
         BeatlesAppBar()
         Spacer(modifier = Modifier.height(20.dp))
         Text("The title of the album is ${album.title}. It was released in ${album.year}. This albums lasts ${album.length} over the span of ${album.songs} songs")
@@ -102,9 +113,9 @@ fun InfoScreen (album: AlbumItem) {
 }
 
 sealed class Routes(val route: String) {
-    object Start: Routes("albumsScreen")
-    object Abbey: Routes("abbey")
-    object Rubber: Routes("rubber")
-    object Revolver: Routes("revolver")
-    object Pepper: Routes("pepper")
+    object Start : Routes("albumsScreen")
+    object Abbey : Routes("abbey")
+    object Rubber : Routes("rubber")
+    object Revolver : Routes("revolver")
+    object Pepper : Routes("pepper")
 }
