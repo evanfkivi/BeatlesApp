@@ -113,9 +113,9 @@ fun InfoScreen(album: AlbumItem) {
 }
 
 sealed class Routes(val route: String) {
-    object Start : Routes("albumsScreen")
-    object Abbey : Routes("abbey")
-    object Rubber : Routes("rubber")
-    object Revolver : Routes("revolver")
-    object Pepper : Routes("pepper")
+    data object Start : Routes("albumsScreen")
+    data object Abbey : Routes("abbey")
+    data object Rubber : Routes("rubber")
+    data object Revolver : Routes("revolver")
+    data object Pepper : Routes("pepper")
 }
