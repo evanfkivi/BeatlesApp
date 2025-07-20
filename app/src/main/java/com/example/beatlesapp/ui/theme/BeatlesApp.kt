@@ -2,19 +2,15 @@ package com.example.beatlesapp.ui.theme
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.beatlesapp.data.AlbumList
 
 @Composable
 fun BeatlesApp() {
     val navController: NavHostController = rememberNavController()
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.destination
 
     Scaffold() { innerPadding ->
         NavHost(
