@@ -1,32 +1,34 @@
 package com.example.beatlesapp.ui.theme
 
-import android.provider.MediaStore.Audio.Albums
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.beatlesapp.data.AlbumList
 
 @Composable
-fun BeatlesApp () {
+fun BeatlesApp() {
     val navController: NavHostController = rememberNavController()
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.destination
 
-    Scaffold() {innerPadding ->
-        NavHost(navController = navController,
-            startDestination = Routes.Start.route) {
+    Scaffold {innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Routes.Start.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
 
             composable(route = Routes.Start.route) {
-                AlbumsScreen(albumList = AlbumList,
+                AlbumsScreen(
+                    albumList = AlbumList,
                     onAbbeyClicked = {navController.navigate(Routes.Abbey.route)},
                     onRubberClicked = {navController.navigate(Routes.Rubber.route)},
                     onRevolverClicked = {navController.navigate(Routes.Revolver.route)},
-                    onPepperClicked = {navController.navigate(Routes.Pepper.route)})
+                    onPepperClicked = {navController.navigate(Routes.Pepper.route)}
+                )
             }
 
             composable(route = Routes.Abbey.route) {
@@ -39,6 +41,10 @@ fun BeatlesApp () {
 
             composable(route = Routes.Revolver.route) {
                 InfoScreen(album = AlbumList[2])
+            }
+
+            composable(route = Routes.Pepper.route) {
+                InfoScreen(album = AlbumList[3])
             }
         }
     }

@@ -1,110 +1,125 @@
 package com.example.beatlesapp.ui.theme
 
-import android.provider.MediaStore.Audio.Albums
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.beatlesapp.data.AlbumItem
 
 @Composable
-fun AlbumsScreen (albumList: List<AlbumItem>,
-                  onAbbeyClicked: () -> Unit,
-                  onRubberClicked: () -> Unit,
-                  onRevolverClicked: () -> Unit,
-                  onPepperClicked: () -> Unit) {
-
-    Column {
-
+fun AlbumsScreen(
+    albumList: List<AlbumItem>,
+    onAbbeyClicked: () -> Unit,
+    onRubberClicked: () -> Unit,
+    onRevolverClicked: () -> Unit,
+    onPepperClicked: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+    ) {
         BeatlesAppBar()
 
-        LazyVerticalGrid (columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.Top){
-
+        LazyVerticalGrid (
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.Top
+        ){
             item {
-                ShowAlbumItem(albumText = albumList[0].title,
+                ShowAlbumItem(
+                    album = albumList[0],
                     onClick = onAbbeyClicked)
             }
 
             item {
-                ShowAlbumItem(albumText = albumList[1].title,
+                ShowAlbumItem(
+                    album = albumList[1],
                     onClick = onRubberClicked)
             }
 
             item {
-                ShowAlbumItem(albumText = albumList[2].title,
+                ShowAlbumItem(
+                    album = albumList[2],
                     onClick = onRevolverClicked)
             }
 
             item {
-                ShowAlbumItem(albumText = albumList[3].title,
+                ShowAlbumItem(
+                    album = albumList[3],
                     onClick = onPepperClicked)
             }
-    } }
-
-
+        }
+    }
 }
 
 @Composable
-fun ShowAlbumItem (
-    albumText: String,
-    onClick: () -> Unit
+fun ShowAlbumItem(
+    album: AlbumItem,
+    onClick: () -> Unit,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(),
         onClick = onClick,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = albumText,
-            fontSize = 30.sp
-        )
+        Box(modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    painter = painterResource(album.art),
+                    contentDescription = null
+                )
+                Text(
+                    text = album.title,
+                    fontSize = 30.sp
+                )
+            }
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeatlesAppBar () {
+fun BeatlesAppBar() {
     TopAppBar(
         title = {
-            Text (
+            Text(
                 "Beatles App",
                 fontWeight = FontWeight.Bold
             )
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
     )
 }
 
-@Composable
-fun InfoScreen (album: AlbumItem) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()) {
-        BeatlesAppBar()
-        Spacer(modifier = Modifier.height(20.dp))
-        Text("The title of the album is ${album.title}. It was released in ${album.year}. This albums lasts ${album.length} over the span of ${album.songs} songs")
-    }
-}
-
 sealed class Routes(val route: String) {
-    object Start: Routes("albumsScreen")
-    object Abbey: Routes("abbey")
-    object Rubber: Routes("rubber")
-    object Revolver: Routes("revolver")
-    object Pepper: Routes("pepper")
+    data object Start : Routes("albumsScreen")
+    data object Abbey : Routes("abbey")
+    data object Rubber : Routes("rubber")
+    data object Revolver : Routes("revolver")
+    data object Pepper : Routes("pepper")
 }
