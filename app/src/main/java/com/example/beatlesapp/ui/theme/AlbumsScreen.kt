@@ -78,7 +78,7 @@ fun AlbumsScreen(
 @Composable
 fun ShowAlbumItem(
     album: AlbumItem,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Card(
         elevation = CardDefaults.cardElevation(),

@@ -35,19 +35,23 @@ fun BeatlesApp() {
             //  arguments, which is important and sick.
 
             composable(route = Routes.Abbey.route) {
-                InfoScreen(album = AlbumList[0])
+                InfoScreen(album = AlbumList[0],
+                    onBackClick = {navController.navigate(Routes.Start.route)})
             }
 
             composable(route = Routes.Rubber.route) {
-                InfoScreen(album = AlbumList[1])
+                InfoScreen(album = AlbumList[1],
+                    onBackClick = {navController.navigate(Routes.Start.route)})
             }
 
             composable(route = Routes.Revolver.route) {
-                InfoScreen(album = AlbumList[2])
+                InfoScreen(album = AlbumList[2],
+                    onBackClick = {navController.navigate(Routes.Start.route)})
             }
 
             composable(route = Routes.Pepper.route) {
-                InfoScreen(album = AlbumList[3])
+                InfoScreen(album = AlbumList[3],
+                    onBackClick = {navController.navigate(Routes.Start.route)})
             }
         }
     }
