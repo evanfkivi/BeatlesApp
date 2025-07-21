@@ -11,6 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.beatlesapp.data.AlbumItem
 
+/**
+ * TODO [album] should come from an `InfoViewModel`.
+ *
+ * The album can be provided to the `InfoViewModel` via a navigation argument.
+ */
 @Composable
 fun InfoScreen(album: AlbumItem) {
     Column(

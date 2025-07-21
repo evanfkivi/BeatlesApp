@@ -24,6 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.beatlesapp.data.AlbumItem
 
+/**
+ * TODO [albumList] should come from the an `AlbumsViewModel`.
+ *
+ * The lambdas can be reduced down to one `onAlbumItemClicked` and we can provide it a `AlbumItem`.
+ */
 @Composable
 fun AlbumsScreen(
     albumList: List<AlbumItem>,
