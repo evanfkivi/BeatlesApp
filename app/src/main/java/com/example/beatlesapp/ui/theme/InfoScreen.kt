@@ -8,13 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.unit.dp
 import com.example.beatlesapp.data.AlbumItem
 
@@ -36,8 +33,10 @@ fun InfoScreen(
         Spacer(modifier = Modifier.height(20.dp))
         Text("The title of the album is ${album.title}. It was released in ${album.year}. This album lasts ${album.length} over the span of ${album.songs} songs")
         Button(onClick = onBackClick) {
-            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null)
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = null
+            )
         }
     }
 }
