@@ -31,6 +31,9 @@ fun BeatlesApp() {
                 )
             }
 
+            // TODO There should only be one info screen navigation destination -- but need to setup navigation
+            //  arguments, which is important and sick.
+
             composable(route = Routes.Abbey.route) {
                 InfoScreen(album = AlbumList[0])
             }
