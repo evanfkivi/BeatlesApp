@@ -1,4 +1,4 @@
-package com.example.beatlesapp.ui.theme
+package com.example.beatlesapp.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

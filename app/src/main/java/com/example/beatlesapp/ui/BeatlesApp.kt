@@ -1,4 +1,4 @@
-package com.example.beatlesapp.ui.theme
+package com.example.beatlesapp.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -9,6 +9,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.beatlesapp.data.AlbumList
+import com.example.beatlesapp.ui.screens.AlbumsScreen
+import com.example.beatlesapp.ui.screens.InfoScreen
+import com.example.beatlesapp.ui.screens.Routes
+import com.example.beatlesapp.ui.screens.Routes.Abbey
+import com.example.beatlesapp.ui.screens.Routes.Pepper
+import com.example.beatlesapp.ui.screens.Routes.Revolver
+import com.example.beatlesapp.ui.screens.Routes.Rubber
 
 @Composable
 fun BeatlesApp() {
@@ -24,10 +31,10 @@ fun BeatlesApp() {
             composable(route = Routes.Start.route) {
                 AlbumsScreen(
                     albumList = AlbumList,
-                    onAbbeyClicked = { navController.navigate(Routes.Abbey.route) },
-                    onRubberClicked = { navController.navigate(Routes.Rubber.route) },
-                    onRevolverClicked = { navController.navigate(Routes.Revolver.route) },
-                    onPepperClicked = { navController.navigate(Routes.Pepper.route) }
+                    onAbbeyClicked = { navController.navigate(Abbey.route) },
+                    onRubberClicked = { navController.navigate(Rubber.route) },
+                    onRevolverClicked = { navController.navigate(Revolver.route) },
+                    onPepperClicked = { navController.navigate(Pepper.route) }
                 )
             }
 

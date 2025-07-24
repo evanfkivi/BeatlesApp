@@ -1,4 +1,4 @@
-package com.example.beatlesapp.ui.theme
+package com.example.beatlesapp.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
