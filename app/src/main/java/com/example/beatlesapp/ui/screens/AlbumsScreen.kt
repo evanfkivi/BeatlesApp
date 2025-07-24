@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.beatlesapp.data.AlbumItem
+import com.example.beatlesapp.ui.BeatlesViewModel
 
 /**
  * TODO [albumList] should come from the an `AlbumsViewModel`.
@@ -31,7 +32,7 @@ import com.example.beatlesapp.data.AlbumItem
  */
 @Composable
 fun AlbumsScreen(
-    albumList: List<AlbumItem>,
+    viewModel: BeatlesViewModel,
     onAbbeyClicked: () -> Unit,
     onRubberClicked: () -> Unit,
     onRevolverClicked: () -> Unit,
@@ -50,25 +51,25 @@ fun AlbumsScreen(
         ){
             item {
                 ShowAlbumItem(
-                    album = albumList[0],
+                    album = viewModel.state[0],
                     onClick = onAbbeyClicked)
             }
 
             item {
                 ShowAlbumItem(
-                    album = albumList[1],
+                    album = viewModel.state[1],
                     onClick = onRubberClicked)
             }
 
             item {
                 ShowAlbumItem(
-                    album = albumList[2],
+                    album = viewModel.state[2],
                     onClick = onRevolverClicked)
             }
 
             item {
                 ShowAlbumItem(
-                    album = albumList[3],
+                    album = viewModel.state[3],
                     onClick = onPepperClicked)
             }
         }
