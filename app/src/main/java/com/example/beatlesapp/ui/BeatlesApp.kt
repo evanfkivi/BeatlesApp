@@ -42,28 +42,28 @@ fun BeatlesApp() {
             // TODO There should only be one info screen navigation destination -- but need to setup navigation
             //  arguments, which is important and sick.
 
-            composable(route = Routes.Abbey.route) {
+            composable(route = Abbey.route) {
                 InfoScreen(
                     album = viewModel.state[0],
                     onBackClick = { navController.popBackStack() }
                 )
             }
 
-            composable(route = Routes.Rubber.route) {
+            composable(route = Rubber.route) {
                 InfoScreen(
                     album = viewModel.state[1],
                     onBackClick = { navController.popBackStack() }
                 )
             }
 
-            composable(route = Routes.Revolver.route) {
+            composable(route = Revolver.route) {
                 InfoScreen(
                     album = viewModel.state[2],
                     onBackClick = { navController.popBackStack() }
                 )
             }
 
-            composable(route = Routes.Pepper.route) {
+            composable(route = Pepper.route) {
                 InfoScreen(
                     album = viewModel.state[3],
                     onBackClick = { navController.popBackStack() }
