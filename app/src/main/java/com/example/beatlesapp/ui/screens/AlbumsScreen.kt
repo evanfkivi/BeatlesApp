@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.beatlesapp.data.AlbumItem
 import com.example.beatlesapp.ui.BeatlesViewModel
+import kotlinx.serialization.Serializable
 
 /**
  * TODO [albumList] should come from the an `AlbumsViewModel`.
@@ -33,10 +34,7 @@ import com.example.beatlesapp.ui.BeatlesViewModel
 @Composable
 fun AlbumsScreen(
     viewModel: BeatlesViewModel,
-    onAbbeyClicked: () -> Unit,
-    onRubberClicked: () -> Unit,
-    onRevolverClicked: () -> Unit,
-    onPepperClicked: () -> Unit
+    onItemClicked: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -45,32 +43,36 @@ fun AlbumsScreen(
     ) {
         BeatlesAppBar()
 
-        LazyVerticalGrid (
+        LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.Top
-        ){
+        ) {
             item {
                 ShowAlbumItem(
                     album = viewModel.state[0],
-                    onClick = onAbbeyClicked)
+                    onClick = { onItemClicked(0) }
+                )
             }
 
             item {
                 ShowAlbumItem(
                     album = viewModel.state[1],
-                    onClick = onRubberClicked)
+                    onClick = { onItemClicked(1) }
+                )
             }
 
             item {
                 ShowAlbumItem(
                     album = viewModel.state[2],
-                    onClick = onRevolverClicked)
+                    onClick = { onItemClicked(2) }
+                )
             }
 
             item {
                 ShowAlbumItem(
                     album = viewModel.state[3],
-                    onClick = onPepperClicked)
+                    onClick = { onItemClicked(3) }
+                )
             }
         }
     }
@@ -87,8 +89,10 @@ fun ShowAlbumItem(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Box(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     painter = painterResource(album.art),
@@ -119,10 +123,13 @@ fun BeatlesAppBar() {
     )
 }
 
-sealed class Routes(val route: String) {
-    data object Start : Routes("albumsScreen")
-    data object Abbey : Routes("abbey")
-    data object Rubber : Routes("rubber")
-    data object Revolver : Routes("revolver")
-    data object Pepper : Routes("pepper")
+@Serializable
+sealed class Routes {
+    @Serializable
+    data object Start : Routes()
+
+    @Serializable
+    data class Info(
+        val index: Int,
+    ) : Routes()
 }
