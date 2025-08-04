@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.beatlesapp.data.AlbumItem
 import com.example.beatlesapp.ui.BeatlesViewModel
+import kotlinx.serialization.Serializable
 
 /**
  * TODO [albumList] should come from the an `AlbumsViewModel`.
@@ -122,7 +123,13 @@ fun BeatlesAppBar() {
     )
 }
 
-sealed class Routes(val route: String) {
-    data object Start : Routes("albumsScreen")
-    data object Info : Routes("infoScreen")
+@Serializable
+sealed class Routes {
+    @Serializable
+    data object Start : Routes()
+
+    @Serializable
+    data class Info(
+        val index: Int,
+    ) : Routes()
 }

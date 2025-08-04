@@ -3,10 +3,6 @@ package com.example.beatlesapp.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -23,27 +19,21 @@ fun BeatlesApp() {
     val viewModel: BeatlesViewModel = viewModel()
 
     Scaffold { innerPadding ->
-        var clickedItem: Int by remember { mutableIntStateOf(0) }
-
         NavHost(
             navController = navController,
-            startDestination = Routes.Start.route,
+            startDestination = Routes.Start,
             modifier = Modifier.padding(innerPadding)
         ) {
 
-            composable(route = Routes.Start.route) {
+            composable<Routes.Start> {
                 AlbumsScreen(
                     viewModel = viewModel,
-                    onItemClicked = {
-                        clickedItem = it
-                        navController.navigate(Routes.Info.route)
-                    },
+                    onItemClicked = { navController.navigate(Routes.Info(it)) }
                 )
             }
 
-            composable(route = Routes.Info.route) {
+            composable<Routes.Info> {
                 InfoScreen(
-                    album = viewModel.state[clickedItem],
                     onBackClick = { navController.popBackStack() }
                 )
             }
