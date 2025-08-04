@@ -3,6 +3,10 @@ package com.example.beatlesapp.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -12,10 +16,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.beatlesapp.ui.screens.AlbumsScreen
 import com.example.beatlesapp.ui.screens.InfoScreen
 import com.example.beatlesapp.ui.screens.Routes
-import com.example.beatlesapp.ui.screens.Routes.Abbey
-import com.example.beatlesapp.ui.screens.Routes.Pepper
-import com.example.beatlesapp.ui.screens.Routes.Revolver
-import com.example.beatlesapp.ui.screens.Routes.Rubber
 
 @Composable
 fun BeatlesApp() {
@@ -23,49 +23,27 @@ fun BeatlesApp() {
     val viewModel: BeatlesViewModel = viewModel()
 
     Scaffold { innerPadding ->
+        var clickedItem: Int by remember { mutableIntStateOf(0) }
+
         NavHost(
             navController = navController,
             startDestination = Routes.Start.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            
+
             composable(route = Routes.Start.route) {
                 AlbumsScreen(
                     viewModel = viewModel,
-                    onAbbeyClicked = { navController.navigate(Abbey.route) },
-                    onRubberClicked = { navController.navigate(Rubber.route) },
-                    onRevolverClicked = { navController.navigate(Revolver.route) },
-                    onPepperClicked = { navController.navigate(Pepper.route) }
+                    onItemClicked = {
+                        clickedItem = it
+                        navController.navigate(Routes.Info.route)
+                    },
                 )
             }
 
-            // TODO There should only be one info screen navigation destination -- but need to setup navigation
-            //  arguments, which is important and sick.
-
-            composable(route = Abbey.route) {
+            composable(route = Routes.Info.route) {
                 InfoScreen(
-                    album = viewModel.state[0],
-                    onBackClick = { navController.popBackStack() }
-                )
-            }
-
-            composable(route = Rubber.route) {
-                InfoScreen(
-                    album = viewModel.state[1],
-                    onBackClick = { navController.popBackStack() }
-                )
-            }
-
-            composable(route = Revolver.route) {
-                InfoScreen(
-                    album = viewModel.state[2],
-                    onBackClick = { navController.popBackStack() }
-                )
-            }
-
-            composable(route = Pepper.route) {
-                InfoScreen(
-                    album = viewModel.state[3],
+                    album = viewModel.state[clickedItem],
                     onBackClick = { navController.popBackStack() }
                 )
             }
