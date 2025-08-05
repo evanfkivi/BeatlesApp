@@ -13,25 +13,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.beatlesapp.data.AlbumItem
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.beatlesapp.ui.InfoScreenViewModel
 
-/**
- * TODO [album] should come from an `InfoViewModel`.
- *
- * The album can be provided to the `InfoViewModel` via a navigation argument.
- */
 @Composable
 fun InfoScreen(
-    album: AlbumItem,
     onBackClick: () -> Unit
 ) {
+    val viewModel: InfoScreenViewModel = viewModel()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
         BeatlesAppBar()
         Spacer(modifier = Modifier.height(20.dp))
-        Text("The title of the album is ${album.title}. It was released in ${album.year}. This album lasts ${album.length} over the span of ${album.songs} songs")
+        Text("The title of the album is ${viewModel.album.title}. It was released in ${viewModel.album.year}. This album lasts ${viewModel.album.length} over the span of ${viewModel.album.songs} songs")
         Button(onClick = onBackClick) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
