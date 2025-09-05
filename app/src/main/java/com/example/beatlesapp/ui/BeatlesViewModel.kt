@@ -14,10 +14,3 @@ class BeatlesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(AlbumList)
     val state: StateFlow<List<AlbumItem>> = _uiState.asStateFlow()
 }
-
-class InfoScreenViewModel(
-    savedStateHandle: SavedStateHandle,
-) : ViewModel() {
-    private val route: Routes.Info = savedStateHandle.toRoute()
-    val album: AlbumItem = AlbumList[route.index]
-}
