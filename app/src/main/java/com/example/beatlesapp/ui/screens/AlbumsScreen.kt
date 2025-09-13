@@ -17,26 +17,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.beatlesapp.data.AlbumItem
+import com.example.beatlesapp.ui.BeatlesViewModel
+import kotlinx.serialization.Serializable
 
-/**
- * TODO [albumList] should come from the an `AlbumsViewModel`.
- *
- * The lambdas can be reduced down to one `onAlbumItemClicked` and we can provide it a `AlbumItem`.
- */
 @Composable
 fun AlbumsScreen(
-    albumList: List<AlbumItem>,
-    onAbbeyClicked: () -> Unit,
-    onRubberClicked: () -> Unit,
-    onRevolverClicked: () -> Unit,
-    onPepperClicked: () -> Unit
+    viewModel: BeatlesViewModel,
+    onItemClicked: (Int) -> Unit,
 ) {
+    val state by viewModel.state.collectAsState()
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -44,32 +42,15 @@ fun AlbumsScreen(
     ) {
         BeatlesAppBar()
 
-        LazyVerticalGrid (
+        LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.Top
-        ){
-            item {
+        ) {
+            items(state.size) { item ->
                 ShowAlbumItem(
-                    album = albumList[0],
-                    onClick = onAbbeyClicked)
-            }
-
-            item {
-                ShowAlbumItem(
-                    album = albumList[1],
-                    onClick = onRubberClicked)
-            }
-
-            item {
-                ShowAlbumItem(
-                    album = albumList[2],
-                    onClick = onRevolverClicked)
-            }
-
-            item {
-                ShowAlbumItem(
-                    album = albumList[3],
-                    onClick = onPepperClicked)
+                    album = state[item],
+                    onClick = { onItemClicked(item) }
+                )
             }
         }
     }
@@ -86,8 +67,10 @@ fun ShowAlbumItem(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Box(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     painter = painterResource(album.art),
@@ -118,10 +101,13 @@ fun BeatlesAppBar() {
     )
 }
 
-sealed class Routes(val route: String) {
-    data object Start : Routes("albumsScreen")
-    data object Abbey : Routes("abbey")
-    data object Rubber : Routes("rubber")
-    data object Revolver : Routes("revolver")
-    data object Pepper : Routes("pepper")
+@Serializable
+sealed class Routes {
+    @Serializable
+    data object Start : Routes()
+
+    @Serializable
+    data class Info(
+        val index: Int,
+    ) : Routes()
 }
