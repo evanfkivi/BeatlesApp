@@ -12,11 +12,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.beatlesapp.ui.screens.AlbumsScreen
 import com.example.beatlesapp.ui.screens.InfoScreen
 import com.example.beatlesapp.ui.screens.Routes
+import com.example.beatlesapp.ui.theme.AlbumsViewModel
 
 @Composable
 fun BeatlesApp() {
     val navController: NavHostController = rememberNavController()
-    val viewModel: BeatlesViewModel = viewModel()
+    val viewModel: AlbumsViewModel = viewModel()
 
     Scaffold { innerPadding ->
         NavHost(

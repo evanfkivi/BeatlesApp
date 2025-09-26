@@ -24,16 +24,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.beatlesapp.data.AlbumItem
+import com.example.beatlesapp.data.ReleaseGroup
 import com.example.beatlesapp.ui.BeatlesViewModel
+import com.example.beatlesapp.ui.theme.AlbumsViewModel
 import kotlinx.serialization.Serializable
 
 @Composable
 fun AlbumsScreen(
-    viewModel: BeatlesViewModel,
+    viewModel: AlbumsViewModel = viewModel(),
     onItemClicked: (Int) -> Unit,
 ) {
-    val state by viewModel.state.collectAsState()
+    val albums by viewModel.albums.collectAsState()
 
     Column(
         modifier = Modifier
@@ -46,9 +49,9 @@ fun AlbumsScreen(
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.Top
         ) {
-            items(state.size) { item ->
+            items(albums.size) { item ->
                 ShowAlbumItem(
-                    album = state[item],
+                    album = albums[item],
                     onClick = { onItemClicked(item) }
                 )
             }
@@ -58,7 +61,7 @@ fun AlbumsScreen(
 
 @Composable
 fun ShowAlbumItem(
-    album: AlbumItem,
+    album: ReleaseGroup,
     onClick: () -> Unit
 ) {
     Card(
@@ -72,10 +75,10 @@ fun ShowAlbumItem(
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(
-                    painter = painterResource(album.art),
-                    contentDescription = null
-                )
+//                Image(
+//                    painter = painterResource(album.art),
+//                    contentDescription = null
+//                )
                 Text(
                     text = album.title,
                     fontSize = 30.sp

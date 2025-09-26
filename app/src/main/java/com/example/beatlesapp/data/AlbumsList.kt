@@ -2,6 +2,7 @@ package com.example.beatlesapp.data
 
 import androidx.annotation.DrawableRes
 import com.example.beatlesapp.R
+import com.squareup.moshi.Json
 
 data class AlbumItem(
     val title: String,
@@ -16,4 +17,15 @@ val AlbumList = listOf(
     AlbumItem("Rubber Soul", 1965, 14, "35 min 32 sec", R.drawable.rubbersoul),
     AlbumItem("Revolver", 1966, 14, "34 min 45 sec", R.drawable.revolver),
     AlbumItem("Sgt. Pepper's Lonely Hearts Club Band", 1967, 13, "39 min 55 sec", R.drawable.sgtpepper),
+)
+
+data class ReleaseGroupResponse(
+    @Json(name = "release-groups") val releaseGroups: List<ReleaseGroup>
+)
+
+data class ReleaseGroup(
+    val id: String,
+    val title: String,
+    @Json(name = "first-release-date") val firstReleaseDate: String?,
+    @Json(name = "primary-type") val primaryType: String?
 )
