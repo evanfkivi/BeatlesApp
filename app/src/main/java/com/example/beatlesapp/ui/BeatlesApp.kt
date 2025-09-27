@@ -9,15 +9,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.beatlesapp.data.BeatlesAlbumsRepository
+import com.example.beatlesapp.network.ApiClient
 import com.example.beatlesapp.ui.screens.AlbumsScreen
 import com.example.beatlesapp.ui.screens.InfoScreen
 import com.example.beatlesapp.ui.screens.Routes
 import com.example.beatlesapp.ui.theme.AlbumsViewModel
+import com.example.beatlesapp.ui.theme.AlbumsViewModelFactory
 
 @Composable
 fun BeatlesApp() {
     val navController: NavHostController = rememberNavController()
-    val viewModel: AlbumsViewModel = viewModel()
+    val repository = BeatlesAlbumsRepository(ApiClient.api)
+    val viewModel: AlbumsViewModel = viewModel(
+        factory = AlbumsViewModelFactory(repository)
+    )
 
     Scaffold { innerPadding ->
         NavHost(
@@ -33,9 +39,10 @@ fun BeatlesApp() {
                 )
             }
 
-            composable<Routes.Info> {
+            composable<Routes.Info> { backStackEntry ->
                 InfoScreen(
-                    onBackClick = { navController.popBackStack() }
+                    onBackClick = { navController.popBackStack() },
+                    backStackEntry = backStackEntry
                 )
             }
         }
