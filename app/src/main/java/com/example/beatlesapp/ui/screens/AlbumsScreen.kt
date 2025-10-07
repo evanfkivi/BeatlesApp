@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,26 +20,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.beatlesapp.data.AlbumItem
-import com.example.beatlesapp.data.ReleaseGroup
+import com.example.beatlesapp.ui.BeatlesUiState
 import com.example.beatlesapp.ui.BeatlesViewModel
-import com.example.beatlesapp.ui.theme.AlbumsViewModel
 import kotlinx.serialization.Serializable
+import com.example.beatlesapp.R
+import com.example.beatlesapp.data.Album
 
 @Composable
-fun AlbumsScreen(
-    viewModel: AlbumsViewModel = viewModel(),
-    onItemClicked: (Int) -> Unit,
-) {
-    val albums by viewModel.albums.collectAsState()
+fun AlbumsScreen() {
+    val beatlesViewModel: BeatlesViewModel = viewModel(factory = BeatlesViewModel.Factory)
+    val data = beatlesViewModel.beatlesUiState
+    val retryAction = beatlesViewModel::getAlbums
 
     Column(
         modifier = Modifier
@@ -45,28 +46,33 @@ fun AlbumsScreen(
     ) {
         BeatlesAppBar()
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.Top
-        ) {
-            items(albums.size) { item ->
-                ShowAlbumItem(
-                    album = albums[item],
-                    onClick = { onItemClicked(item) }
-                )
-            }
+        when (data) {
+            is BeatlesUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
+            is BeatlesUiState.Success ->
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    items(data.albums.size) { item ->
+                        ShowAlbumItem(
+                            album = data.albums[item],
+//                            onClick = { onItemClicked(item) }
+                        )
+                    }
+                }
+            is BeatlesUiState.Error -> ErrorScreen(data.message, retryAction, modifier = Modifier.fillMaxSize())
         }
     }
 }
 
 @Composable
 fun ShowAlbumItem(
-    album: ReleaseGroup,
-    onClick: () -> Unit
+    album: Album,
+//    onClick: () -> Unit
 ) {
     Card(
         elevation = CardDefaults.cardElevation(),
-        onClick = onClick,
+//        onClick = onClick,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -113,4 +119,30 @@ sealed class Routes {
     data class Info(
         val index: Int,
     ) : Routes()
+}
+
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Image(
+        modifier = modifier.size(200.dp),
+        painter = painterResource(R.drawable.ic_launcher_foreground),
+        contentDescription = "loading"
+    )
+}
+
+@Composable
+fun ErrorScreen(message: String, retryAction: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = ""
+        )
+        Text(text = message, modifier = Modifier.padding(16.dp))
+        Button(onClick = retryAction) {
+            Text("retry")
+        }
+    }
 }

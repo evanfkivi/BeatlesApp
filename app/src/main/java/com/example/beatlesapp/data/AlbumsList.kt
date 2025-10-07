@@ -19,13 +19,14 @@ val AlbumList = listOf(
     AlbumItem("Sgt. Pepper's Lonely Hearts Club Band", 1967, 13, "39 min 55 sec", R.drawable.sgtpepper),
 )
 
-data class ReleaseGroupResponse(
-    @Json(name = "release-groups") val releaseGroups: List<ReleaseGroup>
-)
-
-data class ReleaseGroup(
+data class Album(
     val id: String,
     val title: String,
     @Json(name = "first-release-date") val firstReleaseDate: String?,
     @Json(name = "primary-type") val primaryType: String?
+)
+
+data class MusicBrainzResponse(
+    @Json(name = "release-groups")
+    val releaseGroups: List<Album>
 )

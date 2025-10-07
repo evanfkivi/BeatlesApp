@@ -7,8 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.beatlesapp.ui.BeatlesApp
-import com.example.beatlesapp.ui.screens.TestAlbumsScreen
+import com.example.beatlesapp.ui.screens.AlbumsScreen
 import com.example.beatlesapp.ui.theme.BeatlesAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,8 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BeatlesAppTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    BeatlesApp()
-//                    TestAlbumsScreen()
+                    AlbumsScreen()
                 }
             }
         }
