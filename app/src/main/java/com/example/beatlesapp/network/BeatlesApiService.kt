@@ -1,6 +1,6 @@
 package com.example.beatlesapp.network
 
-import com.example.beatlesapp.data.MusicBrainzResponse
+import com.example.beatlesapp.model.MusicBrainzResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

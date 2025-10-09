@@ -13,7 +13,6 @@ interface AppContainer {
 }
 
 class DefaultAppContainer : AppContainer {
-
     private val BASE_URL = "https://musicbrainz.org/ws/2/"
 
     private val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

@@ -1,4 +1,4 @@
-package com.example.beatlesapp.ui
+package com.example.beatlesapp.ui.screens
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.beatlesapp.data.Album
-import com.example.beatlesapp.data.BeatlesApplication
+import com.example.beatlesapp.model.Album
+import com.example.beatlesapp.BeatlesApplication
 import com.example.beatlesapp.data.BeatlesRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -22,8 +22,9 @@ sealed interface BeatlesUiState {
     object Loading : BeatlesUiState
 }
 
-class BeatlesViewModel(private val beatlesRepository: BeatlesRepository) : ViewModel() {
-
+class BeatlesViewModel(
+    private val beatlesRepository: BeatlesRepository
+) : ViewModel() {
     var beatlesUiState: BeatlesUiState by mutableStateOf(BeatlesUiState.Loading)
         private set
 

@@ -27,17 +27,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.beatlesapp.ui.BeatlesUiState
-import com.example.beatlesapp.ui.BeatlesViewModel
 import kotlinx.serialization.Serializable
 import com.example.beatlesapp.R
-import com.example.beatlesapp.data.Album
+import com.example.beatlesapp.model.Album
 
 @Composable
-fun AlbumsScreen() {
-    val beatlesViewModel: BeatlesViewModel = viewModel(factory = BeatlesViewModel.Factory)
-    val data = beatlesViewModel.beatlesUiState
-    val retryAction = beatlesViewModel::getAlbums
+fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
+    val viewModel: BeatlesViewModel = viewModel(factory = BeatlesViewModel.Factory)
+    val data = viewModel.beatlesUiState
+    val retryAction = viewModel::getAlbums
 
     Column(
         modifier = Modifier
@@ -56,11 +54,16 @@ fun AlbumsScreen() {
                     items(data.albums.size) { item ->
                         ShowAlbumItem(
                             album = data.albums[item],
-//                            onClick = { onItemClicked(item) }
+                            onClick = { onItemClicked(item) },
+                            modifier = Modifier
                         )
                     }
                 }
-            is BeatlesUiState.Error -> ErrorScreen(data.message, retryAction, modifier = Modifier.fillMaxSize())
+            is BeatlesUiState.Error -> ErrorScreen(
+                data.message,
+                retryAction,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
@@ -68,11 +71,12 @@ fun AlbumsScreen() {
 @Composable
 fun ShowAlbumItem(
     album: Album,
-//    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier
 ) {
     Card(
         elevation = CardDefaults.cardElevation(),
-//        onClick = onClick,
+        onClick = onClick,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -81,10 +85,6 @@ fun ShowAlbumItem(
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//                Image(
-//                    painter = painterResource(album.art),
-//                    contentDescription = null
-//                )
                 Text(
                     text = album.title,
                     fontSize = 30.sp
@@ -110,17 +110,6 @@ fun BeatlesAppBar() {
     )
 }
 
-@Serializable
-sealed class Routes {
-    @Serializable
-    data object Start : Routes()
-
-    @Serializable
-    data class Info(
-        val index: Int,
-    ) : Routes()
-}
-
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Image(
@@ -131,14 +120,19 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ErrorScreen(message: String, retryAction: () -> Unit, modifier: Modifier = Modifier) {
+fun ErrorScreen(
+    message: String,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = ""
+            painter = painterResource(id = R.drawable.ic_launcher_background),
+            contentDescription = ""
         )
         Text(text = message, modifier = Modifier.padding(16.dp))
         Button(onClick = retryAction) {

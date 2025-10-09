@@ -14,26 +14,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.beatlesapp.ui.InfoScreenViewModel
 
 @Composable
 fun InfoScreen(
     onBackClick: () -> Unit
 ) {
-    val viewModel: InfoScreenViewModel = viewModel()
+    val infoScreenViewModel: InfoScreenViewModel = viewModel(factory = InfoScreenViewModel.Factory)
+    val data = infoScreenViewModel.infoUiState
+    val retryAction = infoScreenViewModel::getAlbum
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
         BeatlesAppBar()
+
         Spacer(modifier = Modifier.height(20.dp))
-        Text("The title of the album is ${viewModel.album.title}. It was released in ${viewModel.album.year}. This album lasts ${viewModel.album.length} over the span of ${viewModel.album.songs} songs")
-        Button(onClick = onBackClick) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null
-            )
+
+        when (data) {
+            is InfoUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
+            is InfoUiState.Success ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text("The title of the album is ${data.album.title}. The albumID is ${data.album.id}. This album was first released on ${data.album.firstReleaseDate}.")
+                    Button(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                }
+            is InfoUiState.Error -> ErrorScreen(data.message, retryAction, modifier = Modifier.fillMaxSize())
         }
     }
 }
