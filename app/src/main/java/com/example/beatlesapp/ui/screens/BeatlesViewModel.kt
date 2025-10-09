@@ -1,5 +1,6 @@
 package com.example.beatlesapp.ui.screens
 
+import android.net.http.HttpException
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,7 +14,6 @@ import com.example.beatlesapp.model.Album
 import com.example.beatlesapp.BeatlesApplication
 import com.example.beatlesapp.data.BeatlesRepository
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import java.io.IOException
 
 sealed interface BeatlesUiState {

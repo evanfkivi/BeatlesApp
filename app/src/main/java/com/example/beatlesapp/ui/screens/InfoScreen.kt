@@ -19,9 +19,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun InfoScreen(
     onBackClick: () -> Unit
 ) {
-    val infoScreenViewModel: InfoScreenViewModel = viewModel(factory = InfoScreenViewModel.Factory)
-    val data = infoScreenViewModel.infoUiState
-    val retryAction = infoScreenViewModel::getAlbum
+    val viewModel: InfoScreenViewModel = viewModel(factory = InfoScreenViewModel.Factory)
+    val data = viewModel.infoUiState
+    val retryAction = viewModel::getAlbum
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
