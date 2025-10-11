@@ -38,7 +38,12 @@ fun InfoScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Text("The title of the album is ${data.album.title}. The albumID is ${data.album.id}. This album was first released on ${data.album.firstReleaseDate}.")
+                    Text(
+                        "The title of the album is ${data.details?.title}." +
+                            " The albumID is ${data.details?.id}." +
+                            " This album was first released on ${data.details?.date}." +
+                            " The title of the first song is ${data.details?.media?.firstOrNull()?.tracks?.firstOrNull()?.title}$"
+                    )
                     Button(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

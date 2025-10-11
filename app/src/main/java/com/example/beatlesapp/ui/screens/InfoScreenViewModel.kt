@@ -16,12 +16,16 @@ import androidx.navigation.toRoute
 import com.example.beatlesapp.BeatlesApplication
 import com.example.beatlesapp.data.BeatlesRepository
 import com.example.beatlesapp.model.Album
+import com.example.beatlesapp.model.ReleaseDetailsResponse
 import com.example.beatlesapp.model.Routes
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 sealed interface InfoUiState {
-    data class Success(val album: Album) : InfoUiState
+    data class Success(
+        val album: Album,
+        val details: ReleaseDetailsResponse?
+    ) : InfoUiState
     data class Error(val message: String) : InfoUiState
     object Loading : InfoUiState
 }
@@ -42,7 +46,22 @@ class InfoScreenViewModel(
         viewModelScope.launch {
             infoUiState = InfoUiState.Loading
             infoUiState = try {
-                InfoUiState.Success(beatlesRepository.getAlbum(route.index))
+
+                val album = beatlesRepository.getAlbum(route.index)
+                val releaseId = beatlesRepository
+                    .getReleaseGroupDetails(album.id)
+                    .releases
+                    ?.firstOrNull()
+                    ?.id
+                val details = if (releaseId != null) {
+                    beatlesRepository.getDetails(releaseId)
+                } else { null }
+
+                InfoUiState.Success(
+                    album,
+                    details
+                )
+
             } catch (e: IOException) {
                 InfoUiState.Error(e.message ?: "Unknown error")
             } catch (e: HttpException) {
