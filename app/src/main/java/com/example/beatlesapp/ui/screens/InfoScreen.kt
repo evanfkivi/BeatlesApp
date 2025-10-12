@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -37,12 +38,13 @@ fun InfoScreen(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize()
+                        .padding(16.dp)
                 ) {
                     Text(
                         "The title of the album is ${data.details?.title}." +
                             " The albumID is ${data.details?.id}." +
                             " This album was first released on ${data.details?.date}." +
-                            " The title of the first song is ${data.details?.media?.firstOrNull()?.tracks?.firstOrNull()?.title}$"
+                            " The title of the first song is ${data.details?.media?.firstOrNull()?.tracks?.firstOrNull()?.title}"
                     )
                     Button(onClick = onBackClick) {
                         Icon(

@@ -21,6 +21,7 @@ data class Album(
     val title: String,
     @Json(name = "first-release-date") val firstReleaseDate: String?,
 //   @Json(name = "primary-type") val primaryType: String?
+    val coverArtUrl: String? = null
 )
 
 data class MusicBrainzResponse(

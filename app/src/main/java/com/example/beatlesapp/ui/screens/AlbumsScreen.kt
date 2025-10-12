@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,8 +28,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.beatlesapp.R
 import com.example.beatlesapp.model.Album
+import com.example.beatlesapp.model.ReleaseDetailsResponse
 
 @Composable
 fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
@@ -48,7 +51,11 @@ fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
             is BeatlesUiState.Success ->
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    verticalArrangement = Arrangement.Top
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(16.dp)
+//                    verticalArrangement = Arrangement.Top
                 ) {
                     items(data.albums.size) { item ->
                         ShowAlbumItem(
@@ -83,10 +90,20 @@ fun ShowAlbumItem(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp)
+            ) {
                 Text(
                     text = album.title,
-                    fontSize = 30.sp
+                    fontSize = 25.sp
+                )
+                AsyncImage(
+                    model = album.coverArtUrl,
+                    contentDescription = "${album.title} cover",
+                    modifier = Modifier
+                        .size(80.dp)
+                        .padding(end = 16.dp)
                 )
             }
         }
