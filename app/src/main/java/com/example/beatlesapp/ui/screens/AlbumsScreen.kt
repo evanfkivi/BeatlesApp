@@ -31,7 +31,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.beatlesapp.R
 import com.example.beatlesapp.model.Album
-import com.example.beatlesapp.model.ReleaseDetailsResponse
 
 @Composable
 fun AlbumsScreen(onItemClicked: (Int) -> Unit) {

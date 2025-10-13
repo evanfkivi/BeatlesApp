@@ -23,7 +23,7 @@ import java.io.IOException
 
 sealed interface InfoUiState {
     data class Success(
-        val album: Album,
+        val album: Album?,
         val details: ReleaseDetailsResponse?
     ) : InfoUiState
     data class Error(val message: String) : InfoUiState
@@ -46,22 +46,8 @@ class InfoScreenViewModel(
         viewModelScope.launch {
             infoUiState = InfoUiState.Loading
             infoUiState = try {
-
-                val album = beatlesRepository.getAlbum(route.index)
-                val releaseId = beatlesRepository
-                    .getReleaseGroupDetails(album.id)
-                    .releases
-                    ?.firstOrNull()
-                    ?.id
-                val details = if (releaseId != null) {
-                    beatlesRepository.getDetails(releaseId)
-                } else { null }
-
-                InfoUiState.Success(
-                    album,
-                    details
-                )
-
+                val (album, details) = beatlesRepository.getAlbumDetails(route.index)
+                InfoUiState.Success(album, details)
             } catch (e: IOException) {
                 InfoUiState.Error(e.message ?: "Unknown error")
             } catch (e: HttpException) {

@@ -38,9 +38,9 @@ class BeatlesViewModel(
             beatlesUiState = try {
                 BeatlesUiState.Success(beatlesRepository.getAlbums())
             } catch (e: IOException) {
-                BeatlesUiState.Error(e.message ?: "Unknown error")
+                BeatlesUiState.Error(e.message ?: "IOException")
             } catch (e: HttpException) {
-                BeatlesUiState.Error(e.message ?: "Unknown error")
+                BeatlesUiState.Error(e.message ?: "HttpException")
             }
         }
     }
