@@ -10,6 +10,8 @@ interface BeatlesRepository {
     suspend fun getAlbum(index : Int): Album
     suspend fun getDetails(releaseId: String): ReleaseDetailsResponse
     suspend fun getReleaseGroupDetails(id: String): ReleaseGroupDetailsResponse
+    suspend fun getAlbumDetails(index: Int): Pair<Album, ReleaseDetailsResponse?>
+
 }
 
 class NetworkBeatlesRepository(
@@ -47,8 +49,10 @@ class NetworkBeatlesRepository(
     }
 
     override suspend fun getAlbum(index: Int): Album {
-        return cachedAlbums?.get(index) ?: getAlbums()[index]
+        val albums = cachedAlbums ?: getAlbums()
+        return albums.getOrElse(index) { throw IndexOutOfBoundsException("Album not found") }
     }
+
 
     override suspend fun getDetails(releaseId: String): ReleaseDetailsResponse {
         return beatlesApiService.getReleaseDetails(releaseId)
@@ -56,5 +60,22 @@ class NetworkBeatlesRepository(
 
     override suspend fun getReleaseGroupDetails(id: String): ReleaseGroupDetailsResponse {
         return beatlesApiService.getReleaseGroupDetails(id)
+    }
+
+    override suspend fun getAlbumDetails(index: Int): Pair<Album, ReleaseDetailsResponse?> {
+        val album = getAlbum(index)
+
+        val releaseId = album.let {
+            getReleaseGroupDetails(it.id)
+                .releases
+                ?.firstOrNull()
+                ?.id
+        }
+
+        val details = releaseId?.let {
+            getDetails(it)
+        }
+
+        return Pair(album, details)
     }
 }
