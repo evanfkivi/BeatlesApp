@@ -8,7 +8,6 @@ import com.example.beatlesapp.network.BeatlesApiService
 interface BeatlesRepository {
     suspend fun getAlbums(): List<Album>
     suspend fun getAlbum(index : Int): Album
-//    suspend fun getAlbumById(releaseId: String): Album
     suspend fun getDetails(releaseId: String): ReleaseDetailsResponse
     suspend fun getReleaseGroupDetails(id: String): ReleaseGroupDetailsResponse
 }
@@ -20,7 +19,11 @@ class NetworkBeatlesRepository(
 
     override suspend fun getAlbums(): List<Album> {
         return cachedAlbums ?: run {
-            val albums = beatlesApiService.getAlbums().releaseGroups.map { album ->
+            val albums = beatlesApiService
+                .getAlbums()
+                .releaseGroups
+                .map { album ->
+
                 val releaseGroupDetails = try {
                     beatlesApiService.getReleaseGroupDetails(album.id)
                 } catch (e: Exception) {
@@ -38,7 +41,6 @@ class NetworkBeatlesRepository(
 
                 album.copy(coverArtUrl = coverArtUrl)
             }
-
             cachedAlbums = albums
             albums
         }

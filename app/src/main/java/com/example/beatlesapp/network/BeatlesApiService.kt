@@ -23,5 +23,7 @@ interface BeatlesApiService {
     ): ReleaseDetailsResponse
 
     @GET("release-group/{id}?inc=releases&fmt=json")
-    suspend fun getReleaseGroupDetails(@Path("id") releaseGroupId: String): ReleaseGroupDetailsResponse
+    suspend fun getReleaseGroupDetails(
+        @Path("id") releaseGroupId: String
+    ): ReleaseGroupDetailsResponse
 }

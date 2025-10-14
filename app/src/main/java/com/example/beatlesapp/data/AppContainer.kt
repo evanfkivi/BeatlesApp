@@ -14,9 +14,7 @@ interface AppContainer {
 
 class DefaultAppContainer : AppContainer {
     private val BASE_URL = "https://musicbrainz.org/ws/2/"
-
     private val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(logging)
         .addInterceptor { chain ->
@@ -29,11 +27,9 @@ class DefaultAppContainer : AppContainer {
             chain.proceed(newRequest)
         }
         .build()
-
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
-
     private val beatlesApiService: BeatlesApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -42,7 +38,6 @@ class DefaultAppContainer : AppContainer {
             .build()
             .create(BeatlesApiService::class.java)
     }
-
     override val beatlesRepository: BeatlesRepository by lazy {
         NetworkBeatlesRepository(beatlesApiService)
     }

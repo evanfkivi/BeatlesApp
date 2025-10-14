@@ -31,7 +31,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.beatlesapp.R
 import com.example.beatlesapp.model.Album
-import com.example.beatlesapp.model.ReleaseDetailsResponse
 
 @Composable
 fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
@@ -48,26 +47,35 @@ fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
 
         when (data) {
             is BeatlesUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
-            is BeatlesUiState.Success ->
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(16.dp)
-//                    verticalArrangement = Arrangement.Top
-                ) {
-                    items(data.albums.size) { item ->
-                        ShowAlbumItem(
-                            album = data.albums[item],
-                            onClick = { onItemClicked(item) },
-                            modifier = Modifier
-                        )
-                    }
-                }
+            is BeatlesUiState.Success -> BeatlesUiStateSuccess(
+                data = data,
+                onItemClicked = onItemClicked
+            )
             is BeatlesUiState.Error -> ErrorScreen(
                 data.message,
                 retryAction,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@Composable
+fun BeatlesUiStateSuccess(
+    data: BeatlesUiState.Success,
+    onItemClicked: (Int) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        items(data.albums.size) { item ->
+            ShowAlbumItem(
+                album = data.albums[item],
+                onClick = { onItemClicked(item) },
                 modifier = Modifier.fillMaxSize()
             )
         }

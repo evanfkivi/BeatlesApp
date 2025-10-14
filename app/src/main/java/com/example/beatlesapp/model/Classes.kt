@@ -15,7 +15,6 @@ sealed class Routes {
 }
 
 // getAlbums() classes
-
 data class Album(
     val id: String,
     val title: String,
@@ -23,25 +22,21 @@ data class Album(
 //   @Json(name = "primary-type") val primaryType: String?
     val coverArtUrl: String? = null
 )
-
 data class MusicBrainzResponse(
     @Json(name = "release-groups")
     val releaseGroups: List<Album>
 )
 
 // getDetails() classes
-
 data class ReleaseDetailsResponse(
     val id: String,
     val title: String,
     val date: String?,
     val media: List<Media>?
 )
-
 data class Media(
     val tracks: List<Track>
 )
-
 data class Track(
     val id: String,
     val title: String,
@@ -49,7 +44,6 @@ data class Track(
 )
 
 // getReleaseGroupDetails() classes
-
 data class ReleaseGroupDetailsResponse(
     val id: String,
     val title: String,
@@ -57,7 +51,6 @@ data class ReleaseGroupDetailsResponse(
     @Json(name = "primary-type") val primaryType: String?,
     val releases: List<Release>?
 )
-
 data class Release(
     val id: String,
     val title: String,
