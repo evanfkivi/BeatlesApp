@@ -12,10 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -106,13 +110,6 @@ fun ShowAlbumItem(
                     text = album.title,
                     fontSize = 25.sp
                 )
-                AsyncImage(
-                    model = album.coverArtUrl,
-                    contentDescription = "${album.title} cover",
-                    modifier = Modifier
-                        .size(80.dp)
-                        .padding(end = 16.dp)
-                )
             }
         }
     }
@@ -120,17 +117,23 @@ fun ShowAlbumItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeatlesAppBar() {
+fun BeatlesAppBar(
+    title: String = "The Beatles",
+    showBackButton: Boolean = false,
+    onBackClick: (() -> Unit)? = null
+) {
     TopAppBar(
-        title = {
-            Text(
-                "Beatles App",
-                fontWeight = FontWeight.Bold
-            )
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        title = { Text(title) },
+        navigationIcon = {
+            if (showBackButton && onBackClick != null) {
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        }
     )
 }
 
