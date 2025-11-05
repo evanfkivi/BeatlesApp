@@ -31,7 +31,8 @@ data class ReleaseDetailsResponse(
     val id: String,
     val title: String,
     val date: String?,
-    val media: List<Media>?
+    val media: List<Media>?,
+    val coverArtUrl: String?
 )
 data class Media(
     val tracks: List<Track>
