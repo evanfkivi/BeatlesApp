@@ -1,6 +1,5 @@
 package com.example.beatlesapp.network
 
-import coil.network.HttpException
 import com.example.beatlesapp.model.Album
 import com.example.beatlesapp.model.Media
 import com.example.beatlesapp.model.MusicBrainzResponse
@@ -36,7 +35,7 @@ object FakeNetworkResults {
         title = "title_getReleaseDetails",
         date = "date_getReleaseDetails",
         media = listOf(fakeMedia),
-        coverArtUrl = "coverArt_getReleaseDetails"
+        coverArtUrl = "coverArtUrl_getReleaseDetails"
     )
 
     val fakeRelease = Release(
