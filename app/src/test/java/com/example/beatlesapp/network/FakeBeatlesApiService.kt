@@ -1,6 +1,5 @@
 package com.example.beatlesapp.network
 
-import com.example.beatlesapp.model.Album
 import com.example.beatlesapp.model.MusicBrainzResponse
 import com.example.beatlesapp.model.ReleaseDetailsResponse
 import com.example.beatlesapp.model.ReleaseGroupDetailsResponse

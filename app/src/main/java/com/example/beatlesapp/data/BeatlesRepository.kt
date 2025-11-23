@@ -35,7 +35,6 @@ class NetworkBeatlesRepository(
         return albums.getOrElse(index) { throw IndexOutOfBoundsException("Album not found") }
     }
 
-
     override suspend fun getDetails(releaseId: String): ReleaseDetailsResponse {
         return beatlesApiService.getReleaseDetails(releaseId)
     }

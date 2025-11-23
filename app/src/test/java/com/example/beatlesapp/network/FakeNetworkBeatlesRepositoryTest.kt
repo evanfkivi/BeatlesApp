@@ -1,5 +1,6 @@
 package com.example.beatlesapp.network
 
+import com.example.beatlesapp.data.NetworkBeatlesRepository
 import com.example.beatlesapp.model.ReleaseGroupDetailsResponse
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,11 +13,11 @@ import kotlin.test.assertNull
 @OptIn(ExperimentalCoroutinesApi::class)
 class FakeNetworkBeatlesRepositoryTest {
 
-    private lateinit var repository: FakeNetworkBeatlesRepository
+    private lateinit var repository: NetworkBeatlesRepository
 
     @Before
     fun setup() {
-        repository = FakeNetworkBeatlesRepository()
+        repository = NetworkBeatlesRepository(FakeBeatlesApiService)
     }
 
     @Test
@@ -47,11 +48,9 @@ class FakeNetworkBeatlesRepositoryTest {
     fun getAlbumDetails_returnsAlbumAndDetails() = runTest {
         val (album, details) = repository.getAlbumDetails(0)
 
-        // album
         val expectedAlbum = FakeNetworkResults.fakeGetAlbums.releaseGroups[0]
         assertEquals(expectedAlbum.id, album.id)
 
-        // details
         val expectedDetails = FakeNetworkResults.fakeGetReleaseDetails
         assertNotNull(details)
         assertEquals(expectedDetails.id, details?.id)
@@ -60,12 +59,11 @@ class FakeNetworkBeatlesRepositoryTest {
 
     @Test
     fun getAlbumDetails_handlesNullReleaseDetailsSafely() = runTest {
-        // Fake: zero releases in releaseGroup
+
         val fakeNoReleases = FakeNetworkResults.fakeGetReleaseGroupDetails.copy(
             releases = null
         )
 
-        // Inject your fake value manually
         val repo = object : FakeNetworkBeatlesRepository() {
             override suspend fun getReleaseGroupDetails(id: String): ReleaseGroupDetailsResponse {
                 return fakeNoReleases
@@ -74,6 +72,6 @@ class FakeNetworkBeatlesRepositoryTest {
 
         val (_, details) = repo.getAlbumDetails(0)
 
-        assertNull(details) // should not crash
+        assertNull(details)
     }
 }

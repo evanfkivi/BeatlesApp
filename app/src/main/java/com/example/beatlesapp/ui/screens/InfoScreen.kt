@@ -12,12 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -101,9 +97,7 @@ fun InfoUiStateSuccess(data: InfoUiState.Success) {
             if (tracks != null) {
                 items(tracks.size) { track ->
                     ShowTrackItem(
-                        index = track,
-                        track = tracks[track],
-                        modifier = Modifier
+                        track = tracks[track]
                     )
                 }
             }
@@ -113,9 +107,7 @@ fun InfoUiStateSuccess(data: InfoUiState.Success) {
 
 @Composable
 fun ShowTrackItem(
-    index: Int,
-    track: Track,
-    modifier: Modifier
+    track: Track
 ) {
     Card(
         elevation = CardDefaults.cardElevation(),
