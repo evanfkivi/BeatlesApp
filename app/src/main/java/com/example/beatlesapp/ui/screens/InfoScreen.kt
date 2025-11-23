@@ -9,21 +9,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.beatlesapp.model.Track
 
 @Composable
@@ -38,34 +38,52 @@ fun InfoScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        BeatlesAppBar()
+        BeatlesAppBar(
+            title = "Album Info",
+            showBackButton = true,
+            onBackClick = onBackClick
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         when (data) {
             is InfoUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
-            is InfoUiState.Success -> InfoUiStateSuccess(
-                data = data,
-                onBackClick = onBackClick
-            )
+            is InfoUiState.Success -> InfoUiStateSuccess(data = data)
             is InfoUiState.Error -> ErrorScreen(data.message, retryAction, modifier = Modifier.fillMaxSize())
         }
     }
 }
 
 @Composable
-fun InfoUiStateSuccess(
-    data: InfoUiState.Success,
-    onBackClick: () -> Unit
-) {
+fun InfoUiStateSuccess(data: InfoUiState.Success) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
             .padding(16.dp)
     ) {
+        val coverUrl = data.album?.coverArtUrl
+        if (coverUrl != null) {
+            AsyncImage(
+                model = coverUrl,
+                contentDescription = "${data.album.title} cover",
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(RoundedCornerShape(16.dp))
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         Text(
-            "This album is entitled ${data.details?.title}." +
+            "This album is titled ${data.details?.title}." +
                     " It was first released on ${data.details?.date}."
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            "Tracklist:",
+            fontSize = 25.sp
         )
 
         LazyColumn(
@@ -79,28 +97,17 @@ fun InfoUiStateSuccess(
             if (tracks != null) {
                 items(tracks.size) { track ->
                     ShowTrackItem(
-                        index = track,
-                        track = tracks[track],
-                        modifier = Modifier
+                        track = tracks[track]
                     )
                 }
             }
-        }
-
-        Button(onClick = onBackClick) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null
-            )
         }
     }
 }
 
 @Composable
 fun ShowTrackItem(
-    index: Int,
-    track: Track,
-    modifier: Modifier
+    track: Track
 ) {
     Card(
         elevation = CardDefaults.cardElevation(),
@@ -114,7 +121,7 @@ fun ShowTrackItem(
                 .padding(8.dp)
         ) {
             Text(
-                text = "Track ${index + 1}:\n${track.title}\n${
+                text = "${track.title}\n${
                     track.length?.let { formatDuration(it) } ?: "Length unknown"
                 }",
                 fontSize = 25.sp
