@@ -24,25 +24,7 @@ class NetworkBeatlesRepository(
             val albums = beatlesApiService
                 .getAlbums()
                 .releaseGroups
-                .map { album ->
 
-                val releaseGroupDetails = try {
-                    beatlesApiService.getReleaseGroupDetails(album.id)
-                } catch (e: Exception) {
-                    null
-                }
-
-                val releaseId = releaseGroupDetails
-                    ?.releases
-                    ?.firstOrNull()
-                    ?.id
-
-                val coverArtUrl = releaseId?.let {
-                    "https://coverartarchive.org/release/$it/front"
-                }
-
-                album.copy(coverArtUrl = coverArtUrl)
-            }
             cachedAlbums = albums
             albums
         }
@@ -52,7 +34,6 @@ class NetworkBeatlesRepository(
         val albums = cachedAlbums ?: getAlbums()
         return albums.getOrElse(index) { throw IndexOutOfBoundsException("Album not found") }
     }
-
 
     override suspend fun getDetails(releaseId: String): ReleaseDetailsResponse {
         return beatlesApiService.getReleaseDetails(releaseId)
@@ -72,10 +53,20 @@ class NetworkBeatlesRepository(
                 ?.id
         }
 
-        val details = releaseId?.let {
-            getDetails(it)
+        val coverArtUrl = releaseId?.let {
+            "https://coverartarchive.org/release/$it/front"
         }
 
-        return Pair(album, details)
+        val albumWithArt = album.copy(coverArtUrl = coverArtUrl)
+
+        val details = releaseId?.let {
+            try {
+                getDetails(it)
+            } catch (e: Exception) {
+                null
+            }
+        }
+
+        return Pair(albumWithArt, details)
     }
 }
