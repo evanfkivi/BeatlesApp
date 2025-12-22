@@ -53,8 +53,8 @@ class FakeNetworkBeatlesRepositoryTest {
 
         val expectedDetails = FakeNetworkResults.fakeGetReleaseDetails
         assertNotNull(details)
-        assertEquals(expectedDetails.id, details?.id)
-        assertEquals(expectedDetails.title, details?.title)
+        assertEquals(expectedDetails.id, details.id)
+        assertEquals(expectedDetails.title, details.title)
     }
 
     @Test
@@ -73,5 +73,14 @@ class FakeNetworkBeatlesRepositoryTest {
         val (_, details) = repo.getAlbumDetails(0)
 
         assertNull(details)
+    }
+
+    @Test
+    fun getReleaseGroupDetails_returnsCorrectDetails() = runTest {
+        val expected = FakeNetworkResults.fakeGetReleaseGroupDetails
+        val actual = repository.getReleaseGroupDetails("id_GetReleaseGroupDetails")
+
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.title, actual.title)
     }
 }
