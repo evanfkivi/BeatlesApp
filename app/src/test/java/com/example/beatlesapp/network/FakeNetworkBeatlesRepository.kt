@@ -5,8 +5,11 @@ import com.example.beatlesapp.model.Album
 import com.example.beatlesapp.model.ReleaseDetailsResponse
 import com.example.beatlesapp.model.ReleaseGroupDetailsResponse
 
-open class FakeNetworkBeatlesRepository: BeatlesRepository {
+open class FakeNetworkBeatlesRepository(
+    private val throwable: Throwable? = null
+): BeatlesRepository {
     override suspend fun getAlbums(): List<Album> {
+        throwable?.let { throw it }
         return FakeBeatlesApiService.getAlbums().releaseGroups
     }
 

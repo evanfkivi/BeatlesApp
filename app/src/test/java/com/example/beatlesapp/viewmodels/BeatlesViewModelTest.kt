@@ -1,5 +1,6 @@
 package com.example.beatlesapp.viewmodels
 
+import android.net.http.HttpException
 import com.example.beatlesapp.network.FakeBeatlesApiService
 import com.example.beatlesapp.network.FakeNetworkBeatlesRepository
 import com.example.beatlesapp.ui.screens.BeatlesUiState
@@ -15,7 +16,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
+import java.io.IOException
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BeatlesViewModelTest {
@@ -32,6 +35,37 @@ class BeatlesViewModelTest {
             assertEquals(
                 BeatlesUiState.Success(FakeBeatlesApiService.getAlbums().releaseGroups),
                 viewModel.beatlesUiState
+            )
+        }
+
+    @Test
+    fun BeatlesViewModel_getAlbums_verifyError() =
+        runTest{
+            val viewModel = BeatlesViewModel(
+                beatlesRepository = FakeNetworkBeatlesRepository(
+                    throwable = IOException("IOException")
+                )
+            )
+
+            val uiState = viewModel.beatlesUiState
+
+            assertTrue(uiState is BeatlesUiState.Error)
+        }
+
+    @Test
+    fun BeatlesViewModel_getAlbums_verifyIOException() =
+        runTest{
+            val viewModel = BeatlesViewModel(
+                beatlesRepository = FakeNetworkBeatlesRepository(
+                    throwable = IOException("IOException")
+                )
+            )
+
+            val uiState = viewModel.beatlesUiState
+
+            assertEquals(
+                "IOException",
+                (uiState as BeatlesUiState.Error).message
             )
         }
 }
