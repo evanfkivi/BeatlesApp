@@ -49,7 +49,7 @@ fun InfoScreen(
         when (data) {
             is InfoUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
             is InfoUiState.Success -> InfoUiStateSuccess(data = data)
-            is InfoUiState.Error -> ErrorScreen(data.message, retryAction, modifier = Modifier.fillMaxSize())
+            is InfoUiState.Error -> ErrorScreen(data.message, retryAction as () -> Unit, modifier = Modifier.fillMaxSize())
         }
     }
 }

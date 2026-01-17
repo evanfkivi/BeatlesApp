@@ -32,21 +32,20 @@ sealed interface InfoUiState {
 
 class InfoScreenViewModel(
     private val beatlesRepository: BeatlesRepository,
-    savedStateHandle: SavedStateHandle,
+    index: Int,
 ) : ViewModel() {
-    private val route: Routes.Info = savedStateHandle.toRoute()
     var infoUiState: InfoUiState by mutableStateOf(InfoUiState.Loading)
         private set
 
     init {
-        getAlbum()
+        getAlbum(index)
     }
 
-    fun getAlbum() {
+    fun getAlbum(index: Int) {
         viewModelScope.launch {
             infoUiState = InfoUiState.Loading
             infoUiState = try {
-                val (album, details) = beatlesRepository.getAlbumDetails(route.index)
+                val (album, details) = beatlesRepository.getAlbumDetails(index)
                 InfoUiState.Success(album, details)
             } catch (e: IOException) {
                 InfoUiState.Error(e.message ?: "Unknown error")
@@ -62,9 +61,10 @@ class InfoScreenViewModel(
                 val application = (this[APPLICATION_KEY] as BeatlesApplication)
                 val beatlesRepository = application.container.beatlesRepository
                 val savedStateHandle = createSavedStateHandle()
+                val index = checkNotNull(savedStateHandle.get<Int>("index"))
                 InfoScreenViewModel(
                     beatlesRepository = beatlesRepository,
-                    savedStateHandle = savedStateHandle
+                    index = index
                 )
             }
         }

@@ -26,16 +26,11 @@ class InfoScreenViewModelTest {
     @Test
     fun InfoScreenViewModel_getAlbum_verifySuccess() =
         runTest{
-
-            val savedState = SavedStateHandle(
-                mapOf("route" to Routes.Info(0))
-            )
-
             val repository = FakeNetworkBeatlesRepository()
 
             val viewModel = InfoScreenViewModel(
                 beatlesRepository = repository,
-                savedStateHandle = savedState
+                index = 0
             )
 
             advanceUntilIdle()
@@ -50,52 +45,44 @@ class InfoScreenViewModelTest {
             assertEquals(FakeNetworkResults.fakeGetReleaseDetails, success.details)
         }
 
-//    @Test
-//    fun InfoScreenViewModel_getAlbum_verifyError() =
-//        runTest{
-//            val savedState = SavedStateHandle(
-//                mapOf("route" to Routes.Info(0))
-//            )
-//
-//            val repository = FakeNetworkBeatlesRepository(
-//                throwable = IOException("IOException")
-//            )
-//
-//            val viewModel = InfoScreenViewModel(
-//                beatlesRepository = repository,
-//                savedStateHandle = savedState
-//            )
-//
-//            advanceUntilIdle()
-//
-//            val state = viewModel.infoUiState
-//
-//            kotlin.test.assertTrue(state is InfoUiState.Error)
-//        }
-//
-//    @Test
-//    fun InfoScreenViewModel_getAlbum_verifyIOException() =
-//        runTest{
-//            val savedState = SavedStateHandle(
-//                mapOf("route" to Routes.Info(0))
-//            )
-//
-//            val repository = FakeNetworkBeatlesRepository(
-//                throwable = IOException("IOException")
-//            )
-//
-//            val viewModel = InfoScreenViewModel(
-//                beatlesRepository = repository,
-//                savedStateHandle = savedState
-//            )
-//
-//            advanceUntilIdle()
-//
-//            val state = viewModel.infoUiState
-//
-//            assertEquals(
-//                "IOException",
-//                (state as InfoUiState.Error).message
-//            )
-//        }
+    @Test
+    fun InfoScreenViewModel_getAlbum_verifyError() =
+        runTest{
+            val repository = FakeNetworkBeatlesRepository(
+                throwable = IOException("IOException")
+            )
+
+            val viewModel = InfoScreenViewModel(
+                beatlesRepository = repository,
+                index = 0
+            )
+
+            advanceUntilIdle()
+
+            val state = viewModel.infoUiState
+
+            kotlin.test.assertTrue(state is InfoUiState.Error)
+        }
+
+    @Test
+    fun InfoScreenViewModel_getAlbum_verifyIOException() =
+        runTest{
+            val repository = FakeNetworkBeatlesRepository(
+                throwable = IOException("IOException")
+            )
+
+            val viewModel = InfoScreenViewModel(
+                beatlesRepository = repository,
+                index = 0
+            )
+
+            advanceUntilIdle()
+
+            val state = viewModel.infoUiState
+
+            assertEquals(
+                "IOException",
+                (state as InfoUiState.Error).message
+            )
+        }
 }
