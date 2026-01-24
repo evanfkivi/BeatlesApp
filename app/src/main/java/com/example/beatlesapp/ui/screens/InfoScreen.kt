@@ -14,8 +14,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.beatlesapp.model.Track
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoScreen(
     onBackClick: () -> Unit
@@ -33,6 +36,7 @@ fun InfoScreen(
     val viewModel: InfoScreenViewModel = viewModel(factory = InfoScreenViewModel.Factory)
     val data = viewModel.infoUiState
     val retryAction = viewModel::getAlbum
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -41,7 +45,8 @@ fun InfoScreen(
         BeatlesAppBar(
             title = "Album Info",
             showBackButton = true,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            scrollBehavior = scrollBehavior
         )
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -122,7 +127,7 @@ fun ShowTrackItem(
         ) {
             Text(
                 text = "${track.title}\n${
-                    track.length?.let { formatDuration(it) } ?: "Length unknown"
+                    track.length?.let { formatDuration(it) } ?: ""
                 }",
                 fontSize = 25.sp
             )

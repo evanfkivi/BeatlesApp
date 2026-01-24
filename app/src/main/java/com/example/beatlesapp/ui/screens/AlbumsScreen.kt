@@ -1,17 +1,21 @@
 package com.example.beatlesapp.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -21,11 +25,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,24 +42,28 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.beatlesapp.R
 import com.example.beatlesapp.model.Album
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
     val viewModel: BeatlesViewModel = viewModel(factory = BeatlesViewModel.Factory)
     val data = viewModel.beatlesUiState
     val retryAction = viewModel::getAlbums
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    Column(
+    Scaffold(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
-    ) {
-        BeatlesAppBar()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = { BeatlesAppBar(scrollBehavior = scrollBehavior) }
+    ) { paddingValues ->
 
         when (data) {
             is BeatlesUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
             is BeatlesUiState.Success -> BeatlesUiStateSuccess(
                 data = data,
-                onItemClicked = onItemClicked
+                onItemClicked = onItemClicked,
+                paddingValues = paddingValues
             )
             is BeatlesUiState.Error -> ErrorScreen(
                 data.message,
@@ -64,14 +77,20 @@ fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
 @Composable
 fun BeatlesUiStateSuccess(
     data: BeatlesUiState.Success,
-    onItemClicked: (Int) -> Unit
+    onItemClicked: (Int) -> Unit,
+    paddingValues: PaddingValues
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(
+            top = paddingValues.calculateTopPadding() + 16.dp,
+            start = 16.dp,
+            end = 16.dp,
+            bottom = 16.dp
+        )
     ) {
         items(data.albums.size) { item ->
             ShowAlbumItem(
@@ -117,7 +136,8 @@ fun ShowAlbumItem(
 fun BeatlesAppBar(
     title: String = "The Beatles",
     showBackButton: Boolean = false,
-    onBackClick: (() -> Unit)? = null
+    onBackClick: (() -> Unit)? = null,
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
         title = { Text(title) },
@@ -130,7 +150,8 @@ fun BeatlesAppBar(
                     )
                 }
             }
-        }
+        },
+        scrollBehavior = scrollBehavior
     )
 }
 
@@ -164,3 +185,13 @@ fun ErrorScreen(
         }
     }
 }
+
+fun Modifier.parallaxLayoutModifier(scrollState: ScrollState, rate: Int)=
+    layout { measurable, constraints ->
+        val placeable = measurable.measure( constraints)
+        val height = if(rate > 0) scrollState.value / rate else scrollState.value
+        layout(placeable.width, placeable.height) {
+            placeable.place(0, height)
+        }
+    }
+
