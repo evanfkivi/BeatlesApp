@@ -1,5 +1,6 @@
 package com.example.beatlesapp.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,10 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.beatlesapp.R
 import com.example.beatlesapp.model.Track
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,11 +76,14 @@ fun InfoUiStateSuccess(data: InfoUiState.Success) {
                 contentDescription = "${data.album.title} cover",
                 modifier = Modifier
                     .size(200.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .clip(RoundedCornerShape(16.dp)),
+                placeholder = painterResource(R.drawable.ic_launcher_foreground),
+                error = painterResource(R.drawable.ic_launcher_foreground),
+                fallback = painterResource(R.drawable.ic_launcher_foreground)
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             "This album is titled ${data.details?.title}." +

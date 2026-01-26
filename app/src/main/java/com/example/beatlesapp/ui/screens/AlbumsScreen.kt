@@ -21,6 +21,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -157,11 +158,12 @@ fun BeatlesAppBar(
 
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
-    Image(
-        modifier = modifier.size(200.dp),
-        painter = painterResource(R.drawable.ic_launcher_foreground),
-        contentDescription = "loading"
-    )
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
 }
 
 @Composable
@@ -185,13 +187,4 @@ fun ErrorScreen(
         }
     }
 }
-
-fun Modifier.parallaxLayoutModifier(scrollState: ScrollState, rate: Int)=
-    layout { measurable, constraints ->
-        val placeable = measurable.measure( constraints)
-        val height = if(rate > 0) scrollState.value / rate else scrollState.value
-        layout(placeable.width, placeable.height) {
-            placeable.place(0, height)
-        }
-    }
 
