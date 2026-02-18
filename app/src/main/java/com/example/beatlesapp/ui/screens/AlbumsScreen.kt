@@ -136,14 +136,13 @@ fun ShowAlbumItem(
 @Composable
 fun BeatlesAppBar(
     title: String = "The Beatles",
-    showBackButton: Boolean = false,
     onBackClick: (() -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
         title = { Text(title) },
         navigationIcon = {
-            if (showBackButton && onBackClick != null) {
+            if (onBackClick != null) {
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,

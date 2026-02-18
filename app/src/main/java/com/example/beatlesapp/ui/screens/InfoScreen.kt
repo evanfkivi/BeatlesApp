@@ -52,7 +52,8 @@ fun InfoScreen(
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { BeatlesAppBar(scrollBehavior = scrollBehavior) }
+        topBar = { BeatlesAppBar(scrollBehavior = scrollBehavior,
+            onBackClick = onBackClick) }
     ) { paddingValues ->
 
         Spacer(modifier = Modifier.height(20.dp))
