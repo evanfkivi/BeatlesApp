@@ -79,7 +79,6 @@ fun InfoUiStateSuccess(data: InfoUiState.Success,
             bottom = 16.dp
         ),
         modifier = Modifier.fillMaxSize()
-            .padding(16.dp)
     ) {
         val coverUrl = data.album?.coverArtUrl
         item {
@@ -105,8 +104,6 @@ fun InfoUiStateSuccess(data: InfoUiState.Success,
                         " It was first released on ${formatReleaseDateSafe(data.details?.date)}."
             )
         }
-
-        item { Spacer(modifier = Modifier.height(20.dp)) }
 
         item {
             Text(
