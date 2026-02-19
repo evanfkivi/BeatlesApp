@@ -1,21 +1,16 @@
 package com.example.beatlesapp.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -35,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +50,9 @@ fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { BeatlesAppBar(scrollBehavior = scrollBehavior) }
+        topBar = { BeatlesAppBar(
+            scrollBehavior = scrollBehavior,
+            onBackClick = null) }
     ) { paddingValues ->
 
         when (data) {
@@ -136,7 +132,7 @@ fun ShowAlbumItem(
 @Composable
 fun BeatlesAppBar(
     title: String = "The Beatles",
-    onBackClick: (() -> Unit)? = null,
+    onBackClick: (() -> Unit)?,
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(

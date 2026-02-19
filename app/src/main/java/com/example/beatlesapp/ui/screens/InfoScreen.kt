@@ -3,7 +3,6 @@ package com.example.beatlesapp.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,11 +51,11 @@ fun InfoScreen(
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { BeatlesAppBar(scrollBehavior = scrollBehavior,
-            onBackClick = onBackClick) }
+        topBar = { BeatlesAppBar(
+            scrollBehavior = scrollBehavior,
+            onBackClick = onBackClick,
+            title = "album title go here") }
     ) { paddingValues ->
-
-        Spacer(modifier = Modifier.height(20.dp))
 
         when (data) {
             is InfoUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
