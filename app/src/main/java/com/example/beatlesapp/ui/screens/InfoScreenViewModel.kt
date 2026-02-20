@@ -33,6 +33,7 @@ sealed interface InfoUiState {
 class InfoScreenViewModel(
     private val beatlesRepository: BeatlesRepository,
     index: Int,
+    title: String,
 ) : ViewModel() {
     var infoUiState: InfoUiState by mutableStateOf(InfoUiState.Loading)
         private set
@@ -62,9 +63,11 @@ class InfoScreenViewModel(
                 val beatlesRepository = application.container.beatlesRepository
                 val savedStateHandle = createSavedStateHandle()
                 val index = checkNotNull(savedStateHandle.get<Int>("index"))
+                val title = checkNotNull(savedStateHandle.get<Int>("title"))
                 InfoScreenViewModel(
                     beatlesRepository = beatlesRepository,
-                    index = index
+                    index = index,
+                    title = title,
                 )
             }
         }

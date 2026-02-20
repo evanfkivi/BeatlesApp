@@ -39,7 +39,8 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    title: String,
 ) {
     val viewModel: InfoScreenViewModel = viewModel(factory = InfoScreenViewModel.Factory)
     val data = viewModel.infoUiState
@@ -54,7 +55,7 @@ fun InfoScreen(
         topBar = { BeatlesAppBar(
             scrollBehavior = scrollBehavior,
             onBackClick = onBackClick,
-            title = "album title go here") }
+            title = title) }
     ) { paddingValues ->
 
         when (data) {
