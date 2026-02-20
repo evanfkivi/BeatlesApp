@@ -39,7 +39,7 @@ import com.example.beatlesapp.model.Album
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
+fun AlbumsScreen(onItemClicked: (Int, String) -> Unit) {
     val viewModel: BeatlesViewModel = viewModel(factory = BeatlesViewModel.Factory)
     val data = viewModel.beatlesUiState
     val retryAction = viewModel::getAlbums
@@ -74,7 +74,7 @@ fun AlbumsScreen(onItemClicked: (Int) -> Unit) {
 @Composable
 fun BeatlesUiStateSuccess(
     data: BeatlesUiState.Success,
-    onItemClicked: (Int) -> Unit,
+    onItemClicked: (Int, String) -> Unit,
     paddingValues: PaddingValues
 ) {
     LazyVerticalGrid(
@@ -92,7 +92,8 @@ fun BeatlesUiStateSuccess(
         items(data.albums.size) { item ->
             ShowAlbumItem(
                 album = data.albums[item],
-                onClick = { onItemClicked(item) },
+                onClick = { onItemClicked(item,
+                    data.albums[item].title) },
                 modifier = Modifier.fillMaxSize()
             )
         }

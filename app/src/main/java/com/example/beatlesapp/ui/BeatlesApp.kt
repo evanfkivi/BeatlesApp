@@ -30,9 +30,11 @@ fun BeatlesApp() {
         ) {
             composable<Routes.Start> {
                 AlbumsScreen(
-                    onItemClicked = { navController.navigate(Routes.Info(
-                        it,
-                        title = TODO()
+                    onItemClicked = { index, title ->
+                        navController.navigate(
+                            Routes.Info(
+                        index,
+                        title
                     )) }
                 )
             }

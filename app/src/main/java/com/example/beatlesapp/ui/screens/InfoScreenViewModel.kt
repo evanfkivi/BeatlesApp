@@ -4,7 +4,6 @@ import android.net.http.HttpException
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -12,12 +11,10 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.toRoute
 import com.example.beatlesapp.BeatlesApplication
 import com.example.beatlesapp.data.BeatlesRepository
 import com.example.beatlesapp.model.Album
 import com.example.beatlesapp.model.ReleaseDetailsResponse
-import com.example.beatlesapp.model.Routes
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -33,7 +30,6 @@ sealed interface InfoUiState {
 class InfoScreenViewModel(
     private val beatlesRepository: BeatlesRepository,
     index: Int,
-    title: String,
 ) : ViewModel() {
     var infoUiState: InfoUiState by mutableStateOf(InfoUiState.Loading)
         private set
@@ -63,11 +59,9 @@ class InfoScreenViewModel(
                 val beatlesRepository = application.container.beatlesRepository
                 val savedStateHandle = createSavedStateHandle()
                 val index = checkNotNull(savedStateHandle.get<Int>("index"))
-                val title = checkNotNull(savedStateHandle.get<Int>("title"))
                 InfoScreenViewModel(
                     beatlesRepository = beatlesRepository,
-                    index = index,
-                    title = title,
+                    index = index
                 )
             }
         }
