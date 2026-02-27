@@ -11,6 +11,7 @@ sealed class Routes {
     @Serializable
     data class Info(
         val index: Int,
+        val title: String,
     ) : Routes()
 }
 
