@@ -62,7 +62,8 @@ fun InfoScreen(
             is InfoUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
             is InfoUiState.Success -> InfoUiStateSuccess(data = data,
                 paddingValues = paddingValues)
-            is InfoUiState.Error -> ErrorScreen(data.message, retryAction as () -> Unit, modifier = Modifier.fillMaxSize())
+            is InfoUiState.Error -> ErrorScreen(data.message,
+                { retryAction(viewModel.index) }, modifier = Modifier.fillMaxSize())
         }
     }
 }

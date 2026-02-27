@@ -34,6 +34,8 @@ class InfoScreenViewModel(
     var infoUiState: InfoUiState by mutableStateOf(InfoUiState.Loading)
         private set
 
+    val index = index
+
     init {
         getAlbum(index)
     }
